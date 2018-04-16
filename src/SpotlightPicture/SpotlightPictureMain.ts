@@ -71,7 +71,7 @@ class SpotlightPictureMain extends ui.SpotlightPictureUI {
         this.position.splice(0, 1);
         let moveTimes:number = Math.floor(Math.random() * 10) + 1;
         let oneMoveTime:number = 3000 / moveTimes;
-        Laya.SoundManager.playSound("res/audio/spotlight-picture.mp3", 1);
+        Laya.SoundManager.playSound("res/audio/spotlight2.mp3", 1);
         this.spotlightMove(moveTimes, oneMoveTime);
     }
 

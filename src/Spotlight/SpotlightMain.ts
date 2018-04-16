@@ -50,6 +50,7 @@ class SpotlightMain extends ui.SpotlightUI {
     // 重置游戏为初始状态
     public reset() {
         this.wellDone.visible = false;
+        this.wellDone.color = "#FFC82C";
         Laya.Tween.to(this.spotlight, {x: 250, y: 200}, 500);
         for(let word of this.wordsText) {
             word.removeSelf();
@@ -132,7 +133,7 @@ class SpotlightMain extends ui.SpotlightUI {
         this.wordsTmp.push(this.curWordText);
         let moveTimes:number = Math.floor(Math.random() * 10) + 1;
         let oneMoveTime:number = 3000 / moveTimes;
-        Laya.SoundManager.playSound("res/audio/spotlight.mp3", 1);
+        Laya.SoundManager.playSound("res/audio/spotlight1.mp3", 1);
         this.spotlightMove(moveTimes, oneMoveTime);
     }
 
