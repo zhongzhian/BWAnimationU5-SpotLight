@@ -1,4 +1,4 @@
-// 砸蛋游戏
+// 聚光灯游戏1
 import Stage = Laya.Stage;
 import WebGL   = Laya.WebGL;
 import Sprite = Laya.Sprite;
@@ -11,9 +11,10 @@ class Spotlight {
         if(!config) {
             config = {
                 gameModel: false,
-                backgroundImg: "bg-1.png", // 背景图
+                type: "word", // 类型：word;picture
+                fontSize: 40, // 字号
                 spotlightSize: 80, // 聚光灯大小
-                position: [{x: 200, y: 250}, {x: 300, y: 400}]  
+                words: ["word", "good", "apple"]
             };
         }
         Spotlight.gameConfig = config;
@@ -28,7 +29,7 @@ class Spotlight {
         // 加载游戏资源
         let resArray: any[] = [
             {url: "res/atlas/common.atlas", type: Laya.Loader.ATLAS},
-            // {url: "res/atlas/Spotlight.atlas", type: Laya.Loader.ATLAS},
+            {url: "res/atlas/Spotlight.atlas", type: Laya.Loader.ATLAS},
             {url: "template/Text/TextBox.png", type: Laya.Loader.IMAGE},
             {url: "template/ButtonTab/btn_LargeTabButton_Middle.png", type: Laya.Loader.IMAGE}
         ];
@@ -46,7 +47,12 @@ class Spotlight {
             Spotlight.spotlightMain = new SpotlightMain();
             Spotlight.spotlightMain.replayBtn.on(Laya.Event.CLICK, this, this.restart);
             Laya.stage.addChild(Spotlight.spotlightMain);
-            Spotlight.spotlightMain.initWords(); 
+            if(Spotlight.gameConfig.type == "picture") {
+                Spotlight.spotlightMain.initPictures(); 
+            }
+            else {
+                Spotlight.spotlightMain.initWords(); 
+            }  
         });
     }
 
@@ -57,6 +63,11 @@ class Spotlight {
         }
         Spotlight.spotlightMain.replayBtn.skin = "common/replay-disabled.png";
         Spotlight.spotlightMain.reset();       
-        Spotlight.spotlightMain.initWords(); 
+        if(Spotlight.gameConfig.type == "picture") {
+            Spotlight.spotlightMain.initPictures(); 
+        }
+        else {
+            Spotlight.spotlightMain.initWords(); 
+        } 
     }
 }

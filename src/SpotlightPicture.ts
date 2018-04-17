@@ -1,4 +1,4 @@
-// 砸蛋游戏
+// 聚光灯游戏2
 import Stage = Laya.Stage;
 import WebGL   = Laya.WebGL;
 import Sprite = Laya.Sprite;
