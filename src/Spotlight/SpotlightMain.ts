@@ -1,10 +1,10 @@
 // 游戏主界面
 class SpotlightMain extends ui.SpotlightUI {
     public words: string[]; // 所有单词
-    private pictureNames: string[]; // 所有图片名称
-    private pictures: Laya.Image[]; // 所有未显示图片
+    public pictureNames: string[]; // 所有图片名称
+    private pictures: Laya.Image[] = new Array<Laya.Image>(); // 所有未显示图片
     private picturesTmp: Laya.Image[] = new Array<Laya.Image>(); // 所有已显示图片
-    private wordsText: Laya.Text[]; // 所有未显示单词页面元素
+    private wordsText: Laya.Text[] = new Array<Laya.Text>(); // 所有未显示单词页面元素
     private wordsTmp: Laya.Text[] = new Array<Laya.Text>(); // 所有已显示单词页面元素
     public spotlight: Laya.Sprite; // 聚光灯
     private curWordText: Laya.Text; // 当前单词
@@ -35,7 +35,11 @@ class SpotlightMain extends ui.SpotlightUI {
             this.setting.visible = false;    
         }
         if(Spotlight.gameConfig.backgroundImg) {
+            this.bg.visible = true;
             this.bg.skin = "Spotlight/" + Spotlight.gameConfig.backgroundImg;
+        }
+        else {
+            this.bg.visible = false;
         }
     }
 
@@ -67,18 +71,26 @@ class SpotlightMain extends ui.SpotlightUI {
     public reset() {
         this.wellDone.visible = false;
         this.wellDone.color = "#FFC82C";
+        for(let picture of this.pictures) {
+            picture.removeSelf();
+            picture.destroy();
+        }
+        for(let picture of this.picturesTmp) {
+            picture.removeSelf();
+            picture.destroy();
+        }
+        for(let word of this.wordsText) {
+            word.removeSelf();
+            word.destroy();
+        }
+        for(let word of this.wordsTmp) {
+            word.removeSelf();
+            word.destroy();
+        }
         if(Spotlight.gameConfig.type == "picture") {
             this.spotlight.visible = false;
             this.spotlightPic.visible = true;
             this.spotlightPic.pos(220, 30);
-            for(let picture of this.pictures) {
-                picture.removeSelf();
-                picture.destroy();
-            }
-            for(let picture of this.picturesTmp) {
-                picture.removeSelf();
-                picture.destroy();
-            }
             this.picturesTmp = new Array<Laya.Image>();
             // 打乱图片顺序
             let picTmp: string[] = new Array<string>();
@@ -98,14 +110,6 @@ class SpotlightMain extends ui.SpotlightUI {
             this.spotlight.visible = true;
             this.spotlightPic.visible = false;
             Laya.Tween.to(this.spotlight, {x: 250, y: 200}, 500);
-            for(let word of this.wordsText) {
-                word.removeSelf();
-                word.destroy();
-            }
-            for(let word of this.wordsTmp) {
-                word.removeSelf();
-                word.destroy();
-            }
             this.wordsTmp = new Array<Laya.Text>();
             // 打乱单词顺序
             let wordTmp: string[] = new Array<string>();
@@ -125,6 +129,7 @@ class SpotlightMain extends ui.SpotlightUI {
 
     // 初始化单词
     public initWords() {
+        this.off(Laya.Event.CLICK, this, this.showPicture);
         this.wordsText = new Array<Laya.Text>();
         for(let word of this.words) {
             let wordText = new Laya.Text();
@@ -148,6 +153,7 @@ class SpotlightMain extends ui.SpotlightUI {
 
     // 初始化图片
     public initPictures() {
+        this.off(Laya.Event.CLICK, this, this.showWord);
         this.pictures = new Array<Laya.Image>();
         for(let picture of this.pictureNames) {
             let pic = new Laya.Image();
