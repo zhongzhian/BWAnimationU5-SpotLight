@@ -61,7 +61,7 @@ var SpotlightPictureMain = /** @class */ (function (_super) {
         this.spotlight = new Sprite();
         this.spotlight.graphics.drawCircle(0, 0, SpotlightPicture.gameConfig.spotlightSize, "#ff0000");
         this.bg.mask = this.spotlight;
-        this.spotlight.pos(150, 120);
+        this.spotlight.pos(117, 173);
         Laya.timer.once(100, this, function () {
             this.on(Laya.Event.CLICK, this, this.oneSpotLigh);
         });
