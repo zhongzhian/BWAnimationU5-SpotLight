@@ -1,4 +1,4 @@
-// 砸蛋游戏
+// 聚光灯游戏1
 var Stage = Laya.Stage;
 var WebGL = Laya.WebGL;
 var Sprite = Laya.Sprite;
@@ -8,9 +8,10 @@ var Spotlight = /** @class */ (function () {
         if (!config) {
             config = {
                 gameModel: false,
-                backgroundImg: "bg-1.png",
+                type: "word",
+                fontSize: 40,
                 spotlightSize: 80,
-                position: [{ x: 200, y: 250 }, { x: 300, y: 400 }]
+                words: ["word", "good", "apple"]
             };
         }
         Spotlight.gameConfig = config;
@@ -23,7 +24,7 @@ var Spotlight = /** @class */ (function () {
         // 加载游戏资源
         var resArray = [
             { url: "res/atlas/common.atlas", type: Laya.Loader.ATLAS },
-            // {url: "res/atlas/Spotlight.atlas", type: Laya.Loader.ATLAS},
+            { url: "res/atlas/Spotlight.atlas", type: Laya.Loader.ATLAS },
             { url: "template/Text/TextBox.png", type: Laya.Loader.IMAGE },
             { url: "template/ButtonTab/btn_LargeTabButton_Middle.png", type: Laya.Loader.IMAGE }
         ];
@@ -39,7 +40,12 @@ var Spotlight = /** @class */ (function () {
             Spotlight.spotlightMain = new SpotlightMain();
             Spotlight.spotlightMain.replayBtn.on(Laya.Event.CLICK, this, this.restart);
             Laya.stage.addChild(Spotlight.spotlightMain);
-            Spotlight.spotlightMain.initWords();
+            if (Spotlight.gameConfig.type == "picture") {
+                Spotlight.spotlightMain.initPictures();
+            }
+            else {
+                Spotlight.spotlightMain.initWords();
+            }
         });
     };
     // 游戏开始
@@ -49,7 +55,12 @@ var Spotlight = /** @class */ (function () {
         }
         Spotlight.spotlightMain.replayBtn.skin = "common/replay-disabled.png";
         Spotlight.spotlightMain.reset();
-        Spotlight.spotlightMain.initWords();
+        if (Spotlight.gameConfig.type == "picture") {
+            Spotlight.spotlightMain.initPictures();
+        }
+        else {
+            Spotlight.spotlightMain.initWords();
+        }
     };
     return Spotlight;
 }());

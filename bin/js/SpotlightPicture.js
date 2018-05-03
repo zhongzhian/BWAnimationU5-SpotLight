@@ -1,4 +1,4 @@
-// 砸蛋游戏
+// 聚光灯游戏2
 var Stage = Laya.Stage;
 var WebGL = Laya.WebGL;
 var Sprite = Laya.Sprite;

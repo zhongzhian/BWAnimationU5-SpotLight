@@ -13,6 +13,7 @@ var SpotlightPictureMain = /** @class */ (function (_super) {
     __extends(SpotlightPictureMain, _super);
     function SpotlightPictureMain() {
         var _this = _super.call(this) || this;
+        _this.wellDone.visible = false;
         _this.position = JSON.parse(JSON.stringify(SpotlightPicture.gameConfig.position));
         _this.configView = new SPConfigView(_this.configBox);
         _this.tip.visible = false;
@@ -42,6 +43,7 @@ var SpotlightPictureMain = /** @class */ (function (_super) {
             this.spotlight.destroy();
         }
         this.replayBtn.skin = "common/replay-disabled.png";
+        this.off(Laya.Event.CLICK, this, this.oneSpotLigh);
     };
     // 设置设置按钮是否显示
     SpotlightPictureMain.prototype.showSetting = function (state) {
@@ -59,7 +61,7 @@ var SpotlightPictureMain = /** @class */ (function (_super) {
         this.spotlight = new Sprite();
         this.spotlight.graphics.drawCircle(0, 0, SpotlightPicture.gameConfig.spotlightSize, "#ff0000");
         this.bg.mask = this.spotlight;
-        this.spotlight.pos(-SpotlightPicture.gameConfig.spotlightSize, -SpotlightPicture.gameConfig.spotlightSize);
+        this.spotlight.pos(150, 120);
         Laya.timer.once(100, this, function () {
             this.on(Laya.Event.CLICK, this, this.oneSpotLigh);
         });
@@ -67,15 +69,27 @@ var SpotlightPictureMain = /** @class */ (function (_super) {
     // 聚光灯一次
     SpotlightPictureMain.prototype.oneSpotLigh = function () {
         this.off(Laya.Event.CLICK, this, this.oneSpotLigh);
+        if (this.position.length == 0) {
+            this.wellDone.removeSelf();
+            this.addChild(this.wellDone);
+            this.wellDone.visible = true;
+            Laya.Tween.to(this.spotlight, { x: this.wellDone.x + this.wellDone.width / 2, y: this.wellDone.y + this.wellDone.height / 2 }, 500, null, Laya.Handler.create(this, function () {
+                this.wellDone.color = "#2534e8";
+                this.replayBtn.skin = "common/replay-abled.png";
+            }));
+            return;
+        }
         this.currentPosition = this.position[0];
         this.position.splice(0, 1);
-        var moveTimes = Math.floor(Math.random() * 10) + 1;
-        var oneMoveTime = 3000 / moveTimes;
-        Laya.SoundManager.playSound("res/audio/spotlight-picture.mp3", 1);
+        var moveTimes = Math.floor(Math.random() * 5) + 3;
+        var oneMoveTime = 1300 / moveTimes;
+        Laya.SoundManager.playSound("res/audio/spotlight2.mp3", 1);
         this.spotlightMove(moveTimes, oneMoveTime);
     };
     // 重置游戏为初始状态
     SpotlightPictureMain.prototype.reset = function () {
+        this.wellDone.visible = false;
+        this.wellDone.color = "#FFC82C";
         var position = JSON.parse(JSON.stringify(SpotlightPicture.gameConfig.position));
         var indexs = new Array();
         for (var i = 0; i < position.length; i++) {
@@ -107,7 +121,7 @@ var SpotlightPictureMain = /** @class */ (function (_super) {
                 this.spotlightMove(moveTimes, oneMoveTime);
             }
             else {
-                if (this.position.length == 0) {
+                if (this.position.length == 0 && SpotlightPicture.gameConfig.position.length == 1) {
                     this.replayBtn.skin = "common/replay-abled.png";
                 }
                 else {

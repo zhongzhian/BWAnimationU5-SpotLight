@@ -1,5 +1,7 @@
 D .
+R D617B067 .DS_Store
 D common
+R 6D88006A .DS_Store
 P 96015AC9 btn_start.png
 P 5A05FAAE configBG.png
 P 18FAF2E0 gameover.png
@@ -10,9 +12,19 @@ P 7F8CE93B replay-disabled.png
 P EA6A5058 replay.png
 P 6F2E1E3C setting.png
 P 5097AE90 well-done.png
+D Spotlight
+R E4AACD15 bg-1.png
+P A25810D8 crocodile.png
+P 9B78E7C7 elephant.png
+P 1A00E208 snake.png
+P A7A20FF5 spider.png
+P BA362AB4 spotlight.png
+P 03E925EE tiger.png
 D SpotlightPicture
+R 6D88006A .DS_Store
 R A63FA8E8 bg-1.png
 D template
+R D6AFB7DA .gitignore
 D template/ButtonTab
 P AE499BA2 btn_LargeTabButton_Middle.png
 D template/Text

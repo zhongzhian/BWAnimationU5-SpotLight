@@ -1,7 +1,7 @@
 // 程序入口，本工程仅用于切换各个动画进行测试
 
 // 游戏名称，修改这个变量值来切换不同游戏，
-let gameName = "spotlight"; 
+let gameName = "spotlight2"; 
 
 if(gameName == "spotlight") {
     // 聚光灯游戏1
@@ -25,4 +25,4 @@ else if(gameName == "spotlight2") {
         position: [{x: 200, y: 250}, {x: 350, y:450}]  
     };
     new SpotlightPicture(config);
-}
+}   
