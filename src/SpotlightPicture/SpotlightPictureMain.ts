@@ -7,6 +7,7 @@ class SpotlightPictureMain extends ui.SpotlightPictureUI {
 
     constructor() {
         super(); 
+        this.wellDone.visible = false;
         this.position = JSON.parse(JSON.stringify(SpotlightPicture.gameConfig.position));
         this.configView = new SPConfigView(this.configBox);
         this.tip.visible = false;
@@ -38,6 +39,7 @@ class SpotlightPictureMain extends ui.SpotlightPictureUI {
             this.spotlight.destroy(); 
         }
         this.replayBtn.skin = "common/replay-disabled.png";
+        this.off(Laya.Event.CLICK, this, this.oneSpotLigh);
     }
 
     // 设置设置按钮是否显示
@@ -58,7 +60,7 @@ class SpotlightPictureMain extends ui.SpotlightPictureUI {
         this.spotlight.graphics.drawCircle(0, 0, SpotlightPicture.gameConfig.spotlightSize, "#ff0000");
         this.bg.mask = this.spotlight;
         
-        this.spotlight.pos(-SpotlightPicture.gameConfig.spotlightSize, -SpotlightPicture.gameConfig.spotlightSize);
+        this.spotlight.pos(150, 120);
         Laya.timer.once(100, this, function() {
             this.on(Laya.Event.CLICK, this, this.oneSpotLigh);
         });
@@ -67,9 +69,19 @@ class SpotlightPictureMain extends ui.SpotlightPictureUI {
     // 聚光灯一次
     private oneSpotLigh() {
         this.off(Laya.Event.CLICK, this, this.oneSpotLigh);
+        if(this.position.length == 0) {
+             this.wellDone.removeSelf();
+            this.addChild(this.wellDone);
+            this.wellDone.visible = true;
+            Laya.Tween.to(this.spotlight, {x: this.wellDone.x+ this.wellDone.width / 2, y: this.wellDone.y + this.wellDone.height / 2}, 500, null, Laya.Handler.create(this, function() {
+                this.wellDone.color = "#2534e8";
+                this.replayBtn.skin = "common/replay-abled.png";
+            }));
+            return;
+        }        
         this.currentPosition = this.position[0];
         this.position.splice(0, 1);
-        let moveTimes:number = Math.floor(Math.random() * 10) + 1;
+        let moveTimes:number = Math.floor(Math.random() * 5) + 3;
         let oneMoveTime:number = 3000 / moveTimes;
         Laya.SoundManager.playSound("res/audio/spotlight2.mp3", 1);
         this.spotlightMove(moveTimes, oneMoveTime);
@@ -77,6 +89,8 @@ class SpotlightPictureMain extends ui.SpotlightPictureUI {
 
     // 重置游戏为初始状态
     public reset() {
+        this.wellDone.visible = false;
+        this.wellDone.color = "#FFC82C";
         let position = JSON.parse(JSON.stringify(SpotlightPicture.gameConfig.position));
         let indexs: number[] = new Array<number>();
         for(let i = 0; i < position.length; i++) {
@@ -110,7 +124,7 @@ class SpotlightPictureMain extends ui.SpotlightPictureUI {
                 this.spotlightMove(moveTimes, oneMoveTime);
             }
             else {
-                if(this.position.length == 0) {
+                if(this.position.length == 0 && SpotlightPicture.gameConfig.position.length == 1) {
                     this.replayBtn.skin = "common/replay-abled.png";
                 }
                 else {
